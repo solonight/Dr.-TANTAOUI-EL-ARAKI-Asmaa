@@ -86,31 +86,18 @@ export default function FloatingMenu() {
         ))}
       </div>
 
-      {/* Buttons */}
-      <div className="flex flex-col gap-3">
-        {/* Second Button (above toggle) */}
-        <button
-          className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-10"
-          aria-label="Second button"
-        >
+      {/* Toggle Button */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-10"
+        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+      >
+        <div className={`transition-transform duration-300 ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white dark:text-gray-900 md:w-8 md:h-8">
             <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
-        </button>
-
-        {/* Toggle Button (bottom) */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gray-900 dark:bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-10"
-          aria-label={isOpen ? 'Close menu' : 'Open menu'}
-        >
-          <div className={`transition-transform duration-300 ${isOpen ? 'rotate-45' : 'rotate-0'}`}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white dark:text-gray-900 md:w-8 md:h-8">
-              <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </div>
-        </button>
-      </div>
+        </div>
+      </button>
     </div>
   )
 }
