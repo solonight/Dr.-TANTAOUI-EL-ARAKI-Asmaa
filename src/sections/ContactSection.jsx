@@ -78,7 +78,7 @@ export default function ContactSection() {
           <div className="w-full h-64 md:h-full">
             <iframe
               title="clinic-map"
-              src={`https://www.google.com/maps?q=clinic&output=embed`}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(doctor.address)}&output=embed`}
               className="w-full h-full border-0"
               style={{ filter: 'grayscale(0.2) contrast(0.9) brightness(0.8)', minHeight: 260 }}
               loading="lazy"
@@ -87,10 +87,10 @@ export default function ContactSection() {
 
           <div className="p-4">
             <h3 className="font-semibold text-lg mb-2">Visit the Clinic</h3>
-            <p className="text-[var(--muted)] mb-3">123 Medical Drive, Suite 400 — City, Country</p>
+            <p className="text-[var(--muted)] mb-3">{doctor.address}</p>
             <div className="flex gap-3 items-center">
               <a
-                href="https://www.google.com/maps/search/?api=1&query=123+Medical+Drive"
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(doctor.address)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="px-3 py-2 rounded-md glass cursor-pointer text-[var(--accent-cyan)]"
