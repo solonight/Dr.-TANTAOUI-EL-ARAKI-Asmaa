@@ -56,7 +56,27 @@ export default function Hero() {
       onMouseEnter={() => setPaused(true)} 
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 relative">
+        {/* Prev/Next controls - always visible at container edges */}
+        <button 
+          aria-label="Previous" 
+          onClick={prev} 
+          className="absolute left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full shadow-2xl hover:scale-110 transition-all bg-[var(--text)] text-[var(--bg)]"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <button 
+          aria-label="Next" 
+          onClick={next} 
+          className="absolute right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full shadow-2xl hover:scale-110 transition-all bg-[var(--text)] text-[var(--bg)]"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+
         <div className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? '' : 'md:flex-row-reverse'}`}>
           {/* Card Section */}
           <motion.div
@@ -98,20 +118,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Prev/Next controls */}
-      <button aria-label="Previous" onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-gradient-to-r from-cyan-500 to-yellow-500 text-white shadow-2xl hover:scale-110 transition-all">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M15 18l-6-6 6-6" />
-        </svg>
-      </button>
-      <button aria-label="Next" onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-gradient-to-r from-cyan-500 to-yellow-500 text-white shadow-2xl hover:scale-110 transition-all">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-          <path d="M9 18l6-6-6-6" />
-        </svg>
-      </button>
-
       {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <div className="flex justify-center gap-2 mt-4">
         {slides.map((s, i) => (
           <button 
             key={i} 

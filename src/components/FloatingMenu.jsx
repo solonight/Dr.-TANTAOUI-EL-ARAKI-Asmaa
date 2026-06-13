@@ -113,7 +113,7 @@ export default function FloatingMenu() {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-[var(--accent-cyan)] text-white shadow-2xl hover:scale-110 transition-transform flex items-center justify-center"
+          className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gray-400 text-black shadow-2xl hover:scale-110 transition-transform flex items-center justify-center"
           aria-label="Scroll to top"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
