@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { FaEye, FaCalendarAlt } from 'react-icons/fa'
 import doctor from '../data/doctorData'
@@ -26,8 +26,7 @@ export default function Hero() {
 
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
-  const timerRef = useRef(null)
-  const dragStart = useRef({ x: 0, y: 0 })
+  const timerRef = React.useRef(null)
 
   useEffect(() => {
     if (slides.length <= 1) return
@@ -51,78 +50,52 @@ export default function Hero() {
   const prev = () => go((index - 1 + slides.length) % slides.length)
   const next = () => go((index + 1) % slides.length)
 
-  const handleStart = (e) => {
-    dragStart.current = {
-      x: e.touches ? e.touches[0].clientX : e.clientX,
-      y: e.touches ? e.touches[0].clientY : e.clientY,
-    }
-    setPaused(true)
-  }
-
-  const handleEnd = (e) => {
-    const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX
-    const endY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY
-    const diffX = dragStart.current.x - endX
-    const diffY = dragStart.current.y - endY
-
-    // Only handle swipe if horizontal movement is bigger
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-      if (diffX > 0) next()
-      else prev()
-    }
-    setPaused(false)
-  }
-
   return (
     <section 
-      className="relative w-full h-[70vh] md:h-[75vh] flex items-center overflow-hidden" 
+      className="relative w-full overflow-hidden" 
       onMouseEnter={() => setPaused(true)} 
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="absolute inset-0">
-        <motion.img
-          key={index}
-          src={current.image}
-          alt={current.title}
-          initial={{ opacity: 0.01 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0.01 }}
-          transition={{ duration: 0.6 }}
-          className="w-full h-full object-cover filter brightness-90"
-        />
-        <div className={`absolute inset-0 transition-all duration-700 ${index % 2 === 0 ? 'bg-gradient-to-r from-black/60 via-black/30 to-transparent' : 'bg-gradient-to-l from-black/60 via-black/30 to-transparent'}`} />
-      </div>
-
-      {/* Card placed outside image area, overlaying */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, x: index % 2 === 0 ? -32 : 32 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          <div className={`flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-            <div className="w-full md:w-2/3 lg:w-1/2">
-              <div className="bg-[var(--card)]/95 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl border border-[var(--border)]">
-                <div className="flex flex-col">
-                  <div className="flex-1">
-                    <h1 className="text-2xl md:text-3xl font-bold text-[var(--text)]">{current.title}</h1>
-                    <div className="text-sm md:text-base text-[var(--muted)] mt-1">{current.subtitle}</div>
-                    <p className="mt-3 text-sm md:text-base text-[var(--text)] leading-relaxed">{current.text}</p>
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      <a href="#work" className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-gradient-to-r from-cyan-500 to-yellow-500 text-white text-sm font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all">
-                        <FaEye /> <span>View Cases</span>
-                      </a>
-                      <a href="#contact" className="inline-flex items-center gap-2 px-4 py-2 rounded-md border-2 border-[var(--accent-cyan)] text-sm text-[var(--text)] bg-[var(--accent-cyan)]/10 hover:bg-[var(--accent-cyan)]/20 transition-all font-semibold">
-                        <FaCalendarAlt /> <span>Book Appointment</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+      <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <div className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? '' : 'md:flex-row-reverse'}`}>
+          {/* Card Section */}
+          <motion.div
+            key="card"
+            initial={{ opacity: 0, x: index % 2 === 0 ? -32 : 32 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="w-full md:w-1/2"
+          >
+            <div className="bg-[var(--card)]/95 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl border border-[var(--border)]">
+              <h1 className="text-2xl md:text-3xl font-bold text-[var(--text)]">{current.title}</h1>
+              <div className="text-sm md:text-base text-[var(--muted)] mt-1">{current.subtitle}</div>
+              <p className="mt-3 text-sm md:text-base text-[var(--text)] leading-relaxed">{current.text}</p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <a href="#work" className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-gradient-to-r from-cyan-500 to-yellow-500 text-white text-sm font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all">
+                  <FaEye /> <span>View Cases</span>
+                </a>
+                <a href="#contact" className="inline-flex items-center gap-2 px-4 py-2 rounded-md border-2 border-[var(--accent-cyan)] text-sm text-[var(--text)] bg-[var(--accent-cyan)]/10 hover:bg-[var(--accent-cyan)]/20 transition-all font-semibold">
+                  <FaCalendarAlt /> <span>Book Appointment</span>
+                </a>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+
+          {/* Image Section */}
+          <motion.div
+            key="image"
+            initial={{ opacity: 0, x: index % 2 === 0 ? 32 : -32 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="w-full md:w-1/2"
+          >
+            <img
+              src={current.image}
+              alt={current.title}
+              className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg filter brightness-90"
+            />
+          </motion.div>
+        </div>
       </div>
 
       {/* Prev/Next controls */}
@@ -144,7 +117,7 @@ export default function Hero() {
             key={i} 
             aria-label={`Go to slide ${i+1}`} 
             onClick={() => go(i)} 
-            className={`w-3 h-3 rounded-full transition-all ${i === index ? 'bg-gradient-to-r from-cyan-500 to-yellow-500 scale-125' : 'bg-white/40'}`} 
+            className={`w-3 h-3 rounded-full transition-all ${i === index ? 'bg-gradient-to-r from-cyan-500 to-yellow-500 scale-125' : 'bg-gray-400'}`} 
           />
         ))}
       </div>
