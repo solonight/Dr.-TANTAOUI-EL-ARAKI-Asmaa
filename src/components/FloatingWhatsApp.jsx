@@ -7,7 +7,7 @@ export default function FloatingWhatsApp() {
   const href = `https://wa.me/${phoneDigits}?text=${message}`
 
   return (
-    <div className="whatsapp-fab">
+    <div className="whatsapp-fab fixed right-4 bottom-4 z-50">
       <a href={href} target="_blank" rel="noreferrer" aria-label="Open WhatsApp">
         <div className="w-14 h-14 rounded-full flex items-center justify-center cursor-pointer shadow-lg pulse" style={{background: '#25D366'}}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white">

@@ -68,10 +68,7 @@ body {
 
 /* Floating WhatsApp button */
 .whatsapp-fab {
-  position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  z-index: 60;
+  /* Positioning now directly on element for consistency */
 }
 
 .pulse {
