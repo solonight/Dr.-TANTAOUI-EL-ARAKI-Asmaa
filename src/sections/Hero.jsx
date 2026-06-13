@@ -78,10 +78,6 @@ export default function Hero() {
       className="relative w-full h-[70vh] md:h-[75vh] flex items-center overflow-hidden" 
       onMouseEnter={() => setPaused(true)} 
       onMouseLeave={() => setPaused(false)}
-      onTouchStart={handleStart}
-      onTouchEnd={handleEnd}
-      onMouseDown={handleStart}
-      onMouseUp={handleEnd}
     >
       <div className="absolute inset-0">
         <motion.img
