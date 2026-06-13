@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { FaEye, FaCalendarAlt } from 'react-icons/fa'
 import doctor from '../data/doctorData'
@@ -26,7 +26,13 @@ export default function Hero() {
 
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
   const timerRef = React.useRef(null)
+  const heroRef = useRef(null)
+
+  // Minimum swipe distance (px)
+  const minSwipeDistance = 50
 
   useEffect(() => {
     if (slides.length <= 1) return
@@ -50,11 +56,37 @@ export default function Hero() {
   const prev = () => go((index - 1 + slides.length) % slides.length)
   const next = () => go((index + 1) % slides.length)
 
+  // Touch handlers
+  const onTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    if (isLeftSwipe) {
+      next()
+    } else if (isRightSwipe) {
+      prev()
+    }
+  }
+
   return (
     <section 
+      ref={heroRef}
       className="relative w-full overflow-hidden" 
       onMouseEnter={() => setPaused(true)} 
       onMouseLeave={() => setPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-12 py-8 md:py-12 relative">
         {/* Prev/Next controls - always visible at container edges */}
@@ -77,15 +109,17 @@ export default function Hero() {
           </svg>
         </button>
 
-        <div className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? '' : 'md:flex-row-reverse'}`}>
+        {/* Slide container - both card and image slide together */}
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className={`flex flex-col md:flex-row items-center gap-8 ${index % 2 === 0 ? '' : 'md:flex-row-reverse'}`}
+        >
           {/* Card Section */}
-          <motion.div
-            key="card"
-            initial={{ opacity: 0, x: index % 2 === 0 ? -32 : 32 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            className="w-full md:w-1/2"
-          >
+          <div className="w-full md:w-1/2">
             <div className="bg-[var(--card)]/95 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl border border-[var(--border)]">
               <h1 className="text-2xl md:text-3xl font-bold text-[var(--text)]">{current.title}</h1>
               <div className="text-sm md:text-base text-[var(--muted)] mt-1">{current.subtitle}</div>
@@ -99,23 +133,17 @@ export default function Hero() {
                 </a>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Image Section */}
-          <motion.div
-            key="image"
-            initial={{ opacity: 0, x: index % 2 === 0 ? 32 : -32 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            className="w-full md:w-1/2"
-          >
+          <div className="w-full md:w-1/2">
             <img
               src={current.image}
               alt={current.title}
               className="w-full h-64 md:h-96 object-cover rounded-xl shadow-lg filter brightness-90"
             />
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Dots */}
@@ -123,7 +151,7 @@ export default function Hero() {
         {slides.map((s, i) => (
           <button 
             key={i} 
-            aria-label={`Go to slide ${i+1}`} 
+            aria-label={`Go to slide ${i + 1}`} 
             onClick={() => go(i)} 
             className={`w-3 h-3 rounded-full transition-all ${i === index ? 'bg-gradient-to-r from-cyan-500 to-yellow-500 scale-125' : 'bg-gray-400'}`} 
           />
