@@ -78,12 +78,31 @@ export default function ContactSection() {
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Contact & Appointment</h2>
           <p className="text-[var(--muted)] mb-6">Fill out the form to request an appointment. We'll confirm availability shortly.</p>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-3">
-            <input name="name" value={form.name} onChange={handleChange} placeholder="Name" className="p-3 rounded border bg-transparent text-[var(--text)] border-transparent" />
-            <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" className="p-3 rounded border bg-transparent text-[var(--text)] border-transparent" />
-            <input name="email" value={form.email} onChange={handleChange} placeholder="Email" className="p-3 rounded border bg-transparent text-[var(--text)] border-transparent" />
-            <input name="date" value={form.date} onChange={handleChange} type="date" className="p-3 rounded border bg-transparent text-[var(--text)] border-transparent" />
-            <textarea name="message" value={form.message} onChange={handleChange} placeholder="Message" rows="4" className="p-3 rounded border bg-transparent text-[var(--text)] border-transparent" />
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-1">
+              <label htmlFor="name" className="text-sm font-medium text-[var(--text)]">Name</label>
+              <input id="name" name="name" value={form.name} onChange={handleChange} placeholder="Enter your full name" className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-1">
+              <label htmlFor="phone" className="text-sm font-medium text-[var(--text)]">Phone</label>
+              <input id="phone" name="phone" value={form.phone} onChange={handleChange} placeholder="Enter your phone number" className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-1">
+              <label htmlFor="email" className="text-sm font-medium text-[var(--text)]">Email</label>
+              <input id="email" name="email" value={form.email} onChange={handleChange} placeholder="Enter your email" type="email" className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-1">
+              <label htmlFor="date" className="text-sm font-medium text-[var(--text)]">Preferred Date</label>
+              <input id="date" name="date" value={form.date} onChange={handleChange} type="date" className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-1">
+              <label htmlFor="message" className="text-sm font-medium text-[var(--text)]">Message</label>
+              <textarea id="message" name="message" value={form.message} onChange={handleChange} placeholder="Tell us about your needs" rows="4" className="p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-[var(--text)] focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+            </div>
 
             {error && <div className="text-sm text-red-500">{error}</div>}
 
