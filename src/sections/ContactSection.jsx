@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
-import emailjs from '@emailjs/browser'
 import doctor from '../data/doctorData'
-
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec' // placeholder - replace with your Web App URL
 
 export default function ContactSection() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', date: '', message: '' })
@@ -30,44 +27,15 @@ export default function ContactSection() {
     setStatus('sending')
     setError('')
 
-    const payload = {
-      name: form.name,
-      phone: form.phone,
-      email: form.email,
-      date: form.date,
-      message: form.message,
-    }
-
+    // Simulation mode - just wait a second and show success
     try {
-      // First, POST to Google Sheets Web App
-      const res = await fetch(GOOGLE_SHEETS_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-
-      if (!res.ok) {
-        // Non-2xx response from server
-        const text = await res.text().catch(() => '')
-        throw new Error(`Sheets endpoint error: ${res.status} ${text}`)
-      }
-
-      // Then send email via EmailJS (replace placeholders with your IDs)
-      await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', payload, 'YOUR_PUBLIC_KEY')
-
+      await new Promise(resolve => setTimeout(resolve, 1500))
       setStatus('success')
       setForm({ name: '', phone: '', email: '', date: '', message: '' })
     } catch (err) {
       console.error('Submit error:', err)
       setStatus('error')
-      // Provide clearer feedback for common CORS/network issues
-      if (err.message && err.message.toLowerCase().includes('cors')) {
-        setError('CORS error: please ensure the Google Web App is deployed with "Anyone, even anonymous" access.')
-      } else if (err.message && err.message.toLowerCase().includes('network')) {
-        setError('Network error: check your connection and try again.')
-      } else {
-        setError(err.message || 'Failed to send. Please try again later.')
-      }
+      setError('Something went wrong. Please try again later.')
     }
   }
 
